@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="19.11.0.0">
+<procedure name="main">
+<interface/>
+<body>
+<c>* Halcon 20</c>
+<c>* offline image augmentation</c>
+<c>   </c>
+<c></c>
+<l>* dirPath := 'CroppedImages/bad'</l>
+<l>dirPath := 'WrinkleImages2/good'</l>
+<c></c>
+<l>open_framegrabber ('File', 1, 1, 0, 0, 0, 0, 'default', -1, 'default', -1, 'default', dirPath, 'default', -1, -1, AcqHandle)</l>
+<c></c>
+<l>list_files (dirPath, ['files','recursive','follow_links'], ImageFiles)</l>
+<l>tuple_regexp_select (ImageFiles, ['\\.(tif|tiff|gif|bmp|jpg|jpeg|jp2|png|pcx|pgm|ppm|pbm|xwd|ima|hobj)$','ignore_case'], ImageFiles)</l>
+<c></c>
+<c></c>
+<l>dev_close_window ()</l>
+<l>dev_open_window (0, 0,  600, 960, 'black', WindowID)</l>
+<c></c>
+<l>for Index := 0 to |ImageFiles|-1 by 1</l>
+<c>    * grab image</c>
+<l>    grab_image(Image, AcqHandle) </l>
+<c>    </c>
+<c></c>
+<l>    smooth_image (Image, ImageSmooth, 'deriche2', 1.0)</l>
+<l>*     smooth_image (Image, ImageSmooth, 'deriche2', 2.0)</l>
+<l>*     mirror_image (Image, ImageMirror, 'column')</l>
+<c>    </c>
+<l>*     scale_image_max (Image, ImageScaleMax)</l>
+<l>*     smooth_image (ImageScaleMax, ImageSmooth, 'deriche2', 1.0)</l>
+<l>    write_image (Image, 'jpeg', 0, 'WrinkleImages4/good/'+(Index+251))</l>
+<c></c>
+<l>endfor</l>
+<c></c>
+<l>stop ()</l>
+<l>stop ()</l>
+<c></c>
+<c></c>
+<c></c>
+<l>close_framegrabber (AcqHandle)</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="Crown_Get_Circle">
+<interface>
+<io>
+<par name="ImageRaw" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ROIDisp" base_type="iconic" dimension="0"/>
+<par name="CrownContourDisp" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="cfROICenterY" base_type="ctrl" dimension="0"/>
+<par name="cfROICenterX" base_type="ctrl" dimension="0"/>
+<par name="cfROICenterRad" base_type="ctrl" dimension="0"/>
+<par name="cfBackgroundColor" base_type="ctrl" dimension="0"/>
+<par name="cfCrownSelectFilter" base_type="ctrl" dimension="0"/>
+<par name="cfDefectSizeAllowed" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Row" base_type="ctrl" dimension="0"/>
+<par name="Column" base_type="ctrl" dimension="0"/>
+<par name="Radius" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>*** find crown circle, then check flare</c>
+<l>graphicBold := 3.5</l>
+<c></c>
+<l>try</l>
+<c>    * ROI</c>
+<l>    gen_circle (ROI, cfROICenterY, cfROICenterX, cfROICenterRad)</l>
+<l>    reduce_domain (ImageRaw, ROI, ImageReduced)</l>
+<c>    </c>
+<c>    *** ROI Overlay </c>
+<l>    dilation_circle (ROI, RegionDilation1, graphicBold)</l>
+<l>    difference (RegionDilation1, ROI, ROIDisp)</l>
+<c>    </c>
+<l>catch (Exception)</l>
+<l>    gen_empty_region (ROIDisp)</l>
+<c>    * Can't create ROI</c>
+<l>endtry</l>
+<c></c>
+<l>try</l>
+<c>    * pick up the brightest image channel</c>
+<l>    if (cfBackgroundColor&gt;0)</l>
+<l>        access_channel (ImageReduced, ImageReduced, cfBackgroundColor)    </l>
+<l>    endif</l>
+<c>    * find the dark part (bottle wall, fill level etc.)</c>
+<l>    binary_threshold (ImageReduced, RegionBin, 'max_separability', 'light', UsedThreshold)</l>
+<c></c>
+<l>    closingFilter := 9</l>
+<l>    closing_circle (RegionBin, RegionClosing,  closingFilter)</l>
+<l>    fill_up (RegionClosing, RegionFillUp)</l>
+<c>    </c>
+<c>    * select the largest region</c>
+<l>    connection (RegionFillUp, ConnectedRegions)    </l>
+<l>    region_features (ConnectedRegions, 'area', Value1)</l>
+<l>    select_shape (ConnectedRegions, SelectedRegions, 'area', 'and', cfCrownSelectFilter, 999999)</l>
+<l>    union1 (SelectedRegions, RegionCap)    </l>
+<l>    region_features (RegionCap, 'rb', Value)</l>
+<l>    if(cfDefectSizeAllowed &gt; Value-30)</l>
+<l>        cfDefectSizeAllowed := Value - 30</l>
+<l>    endif</l>
+<c> </c>
+<l>    erosion_circle (RegionCap, RegionErosion, cfDefectSizeAllowed)</l>
+<l>    dilation_circle (RegionErosion, RegionDilation, cfDefectSizeAllowed)</l>
+<c>    </c>
+<c>    * find crown circle</c>
+<l>    smallest_circle (RegionDilation, Row, Column, Radius)</l>
+<l>    gen_circle (Circle, Row, Column, Radius)</l>
+<c>    </c>
+<c>    *** Crown contour Overlay </c>
+<l>    dilation_circle (Circle, RegionDilation2, graphicBold)</l>
+<l>    difference (RegionDilation2, Circle, CrownContourDisp)</l>
+<c>            </c>
+<l>catch (Exception)</l>
+<l>    gen_empty_region (CrownContourDisp)</l>
+<l>endtry</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="Crown_Get_Circle">
+<parameters>
+<parameter id="Column"/>
+<parameter id="CrownContourDisp"/>
+<parameter id="ImageRaw"/>
+<parameter id="ROIDisp"/>
+<parameter id="Radius"/>
+<parameter id="Row"/>
+<parameter id="cfBackgroundColor"/>
+<parameter id="cfCrownSelectFilter"/>
+<parameter id="cfDefectSizeAllowed"/>
+<parameter id="cfROICenterRad"/>
+<parameter id="cfROICenterX"/>
+<parameter id="cfROICenterY"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="BT_Lite_Find_Crown_CarryRing">
+<interface>
+<io>
+<par name="ImageSrc" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="RegionCarryRing" base_type="iconic" dimension="0"/>
+<par name="ROICarryRing" base_type="iconic" dimension="0"/>
+<par name="ROICrownDisplay" base_type="iconic" dimension="0"/>
+<par name="RegionCrown" base_type="iconic" dimension="0"/>
+<par name="RegionBottleCenter" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="crownROICenterRow" base_type="ctrl" dimension="0"/>
+<par name="crownROICenterCol" base_type="ctrl" dimension="0"/>
+<par name="crownROIWidth" base_type="ctrl" dimension="0"/>
+<par name="crownROIHeight" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="carryRingRow" base_type="ctrl" dimension="0"/>
+<par name="bottleCenterCol" base_type="ctrl" dimension="0"/>
+<par name="runTime" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>global tuple crOffsetY</l>
+<l>global tuple crROIWidth</l>
+<l>global tuple crROIHeight</l>
+<l>global tuple crMonoChannel</l>
+<l>global tuple crGaussFilter</l>
+<c></c>
+<l>global tuple graphicBold</l>
+<l>global tuple crownDynThresh</l>
+<l>global tuple crownMinShape</l>
+<l>global tuple labelROIRow1</l>
+<l>global tuple labelROICol1</l>
+<l>global tuple labelROIRow2</l>
+<l>global tuple labelROICol2</l>
+<l>global tuple crownMeanX</l>
+<l>global tuple crownMeanY</l>
+<c></c>
+<l>count_seconds (start)</l>
+<c></c>
+<l>try</l>
+<l>    probeArrowLength := 80</l>
+<l>    probeArrowWidth := 16</l>
+<l>    crownProbThresh := 90</l>
+<l>    get_image_size (ImageSrc, W, H)</l>
+<c>    * probe in horizontal direction to find crow side edges</c>
+<l>    gen_rectangle2 (ROICrown, crownROICenterRow, crownROICenterCol, 0, crownROIWidth/2, crownROIHeight/2)</l>
+<l>    gen_measure_rectangle2 (crownROICenterRow, crownROICenterCol, 0, crownROIWidth/2, crownROIHeight/2, W, H, 'bilinear', MeasureHandle2)</l>
+<l>    measure_pos (ImageSrc, MeasureHandle2, 1, 10, 'all', 'first', RowEdge1, ColumnEdge1, Amplitude1, Distance1)</l>
+<l>    measure_pos (ImageSrc, MeasureHandle2, 1, 10, 'all', 'last', RowEdge2, ColumnEdge2, Amplitude2, Distance2)</l>
+<l>    close_measure (MeasureHandle2)</l>
+<c>    * probe in downward to find crown top</c>
+<l>    gen_rectangle2 (ROICrownDisplay, crownROICenterRow, (ColumnEdge1+ColumnEdge2)/2.0, 1.57, 200/2, crownROIHeight/2)</l>
+<l>    gen_measure_rectangle2 (crownROICenterRow, (ColumnEdge1+ColumnEdge2)/2.0, 1.57, 200/2, crownROIHeight/2, W, H, 'nearest_neighbor', MeasureHandle1)</l>
+<l>    measure_pos (ImageSrc, MeasureHandle1, 1, 10, 'all', 'last', RowEdge, ColumnEdge, Amplitude, Distance)</l>
+<l>    close_measure (MeasureHandle1)</l>
+<c>    * display probe arrows</c>
+<l>    gen_region_line (RegionLine3, RowEdge, ColumnEdge, RowEdge-probeArrowLength, ColumnEdge)</l>
+<l>    gen_region_line (RegionLine1, RowEdge, ColumnEdge, RowEdge-probeArrowWidth, ColumnEdge-probeArrowWidth)</l>
+<l>    gen_region_line (RegionLine2, RowEdge, ColumnEdge, RowEdge-probeArrowWidth, ColumnEdge+probeArrowWidth)</l>
+<l>    union2 (RegionLine1, RegionLine2, RegionUnion1)</l>
+<l>    union2 (RegionUnion1, RegionLine3, RegionArrow2h)</l>
+<l>    gen_region_line (RegionLine3, RowEdge1, ColumnEdge1, RowEdge1, ColumnEdge1-probeArrowLength)</l>
+<l>    gen_region_line (RegionLine1, RowEdge1, ColumnEdge1, RowEdge1-probeArrowWidth, ColumnEdge1-probeArrowWidth)</l>
+<l>    gen_region_line (RegionLine2, RowEdge1, ColumnEdge1, RowEdge1+probeArrowWidth, ColumnEdge1-probeArrowWidth)</l>
+<l>    union2 (RegionLine1, RegionLine2, RegionUnion1)</l>
+<l>    union2 (RegionUnion1, RegionLine3, RegionArrow2t)</l>
+<l>    gen_region_line (RegionLine3, RowEdge2, ColumnEdge2, RowEdge2, ColumnEdge2+probeArrowLength)</l>
+<l>    gen_region_line (RegionLine1, RowEdge2, ColumnEdge2, RowEdge2-probeArrowWidth, ColumnEdge2+probeArrowWidth)</l>
+<l>    gen_region_line (RegionLine2, RowEdge2, ColumnEdge2, RowEdge2+probeArrowWidth, ColumnEdge2+probeArrowWidth)</l>
+<l>    union2 (RegionLine1, RegionLine2, RegionUnion1)</l>
+<l>    union2 (RegionUnion1, RegionLine3, RegionArrow2b)</l>
+<c>    * arrow2</c>
+<l>    union2 (RegionArrow2h, RegionArrow2b, RegionUnion2)</l>
+<l>    union2 (RegionUnion2, RegionArrow2t, RegionCrown)</l>
+<c></c>
+<c></c>
+<c>    * for display only</c>
+<l>    erosion_circle (ROICrown, RegionErosion1, 3)</l>
+<l>    difference (ROICrown, RegionErosion1, ROICrownDisplay)</l>
+<c></c>
+<c>    * output</c>
+<l>    bottleCenterCol := (ColumnEdge1+ColumnEdge2)/2.0</l>
+<l>    carryRingRow := RowEdge</l>
+<c></c>
+<l>*     if (|bottleCenterCol|&gt;0 and |ColumnEdge|&gt;0)</l>
+<l>*         gen_rectangle2 (RegionBottleCenter, H/2, bottleCenterCol, 0, 2, H/2)</l>
+<c>        * ROI</c>
+<l>*         gen_rectangle2 (Rectangle, RowEdge+crOffsetY+20, bottleCenterCol, 0, crROIWidth, crROIHeight)</l>
+<l>*     else</l>
+<l>*         gen_empty_region (RegionBottleCenter)</l>
+<l>*         gen_empty_region (Rectangle)</l>
+<l>*     endif</l>
+<c></c>
+<l>catch (Exception)</l>
+<l>endtry</l>
+<c></c>
+<c></c>
+<c></c>
+<c>* if find crown then find carry ring</c>
+<l>* if (|bottleCenterCol|&gt;0)</l>
+<c></c>
+<c></c>
+<c>    * 2. find carry ring in front light</c>
+<c></c>
+<l>*     try</l>
+<c>        * image preprocessing</c>
+<l>*         reduce_domain (ImageSrc, Rectangle, ImageReduced)</l>
+<l>*         image_to_channels (ImageReduced, Images)</l>
+<l>*         select_obj (Images, ObjectSelected, crMonoChannel)</l>
+<c></c>
+<c>        * find dark area center</c>
+<l>*         mean_image (ObjectSelected, ImageMean1, 3, 3)</l>
+<c></c>
+<c>        * ** how about grayscale thresholding</c>
+<l>*         min_max_gray (ImageMean1, ImageMean1, 0, Min, Max, Range)</l>
+<l>*         threshold (ImageMean1, RegionCrossing, 0, Min*1.2)</l>
+<c></c>
+<l>*         connection (RegionCrossing, ConnectedRegions)</l>
+<l>*         region_features (ConnectedRegions, 'width', Value)</l>
+<l>*         select_shape (ConnectedRegions, SelectedRegions, 'width', 'and', max(Value), 99999)</l>
+<c>        * get carry ring and its position</c>
+<l>*         region_features (SelectedRegions, 'row', Value1)</l>
+<l>*         gen_rectangle2 (RegionCarryRing, Value1, bottleCenterCol, 0, crROIWidth, 1)</l>
+<l>*         region_features (RegionCarryRing, 'row', carryRingRow)</l>
+<c>        * ROI display</c>
+<l>*         erosion_circle (Rectangle, RegionErosion, graphicBold)</l>
+<l>*         difference (Rectangle, RegionErosion, ROICarryRing)</l>
+<c></c>
+<c>        * 20171218 test</c>
+<l>*         carryRingRow := RowEdge+crOffsetY</l>
+<c></c>
+<l>*     catch (Exception)</l>
+<l>*         gen_empty_region (RegionCarryRing)</l>
+<l>*         carryRingRow := RowEdge+crOffsetY</l>
+<c></c>
+<l>*     endtry</l>
+<c></c>
+<l>* endif</l>
+<c></c>
+<l>count_seconds (end)</l>
+<l>runTime := (end-start)*1000</l>
+<l>return ()</l>
+</body>
+<docu id="BT_Lite_Find_Crown_CarryRing">
+<parameters>
+<parameter id="ImageSrc"/>
+<parameter id="ROICarryRing"/>
+<parameter id="ROICrownDisplay"/>
+<parameter id="RegionBottleCenter"/>
+<parameter id="RegionCarryRing"/>
+<parameter id="RegionCrown"/>
+<parameter id="bottleCenterCol"/>
+<parameter id="carryRingRow"/>
+<parameter id="crownROICenterCol"/>
+<parameter id="crownROICenterRow"/>
+<parameter id="crownROIHeight"/>
+<parameter id="crownROIWidth"/>
+<parameter id="runTime"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
