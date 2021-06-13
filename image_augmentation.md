@@ -11,20 +11,22 @@ Table of Contents:
 
 <a name='intro'></a>
 ## Introduction
-Data augmentation, the technique of artificially expanding labeled training dataset, is very popular in vision deep learning. It is used as a secret sauce in nearly every state-of-the-art model for image classification, and is becoming increasingly common in other modalities such as natural language understanding as well. More [threories](http://ai.stanford.edu/blog/data-augmentation/) are discussed. 
-[Dao et al. 2019](http://proceedings.mlr.press/v97/dao19b/dao19b.pdf) show that a kernel classifier on augmented data approximately decomposes into two components: (i) an averaged version of the transformed features, and (ii) a data-dependent variance regularization term. Data augmentation model combined with a k-nearest neighbor (k-NN) classifier is asymptotically equivalent to a kernel classifier.
+Data augmentation, the technique of artificially expanding training dataset, is very popular in vision deep learning. It is used as a secret sauce in nearly every state-of-the-art model for image classification, and is becoming increasingly common in other modalities such as natural language understanding as well. Except practicing and examples, there are more and more [threories](http://ai.stanford.edu/blog/data-augmentation/) trying to explain how data augmentation works. 
+[Dao et al. 2019](http://proceedings.mlr.press/v97/dao19b/dao19b.pdf) show that data augmentation model combined with a k-nearest neighbor (k-NN) classifier is asymptotically equivalent to a kernel classifier. It can be approximately decomposed into two components: (i) an averaged version of the transformed features, and (ii) a data-dependent variance regularization term.
 
 <a name='pros'></a>
 ## Pros and cons
 Pros:
--	Induce invariance and regularization, reduce model complexity. Improve generalization. Improve robustness, reduce overfitting. Make a CNN model to be invariant to translation, viewpoint, size or illumination. See [here](https://openreview.net/forum?id=p84tly8c4zf)
+-	Induce invariance and regularization, reduce model complexity. 
+-	Improve generalization. 
+-	Improve robustness, reduce overfitting. 
+-	Make a CNN model to be invariant to translation, viewpoint, size or illumination. See [here](https://openreview.net/forum?id=p84tly8c4zf)
 -	Artificially increase training and testing dataset even you have a small dataset
--	Improve model generalization
 
 Cons:
 -	Too much of image augmentation combined with other forms of regularization (weight L2, dropout) can cause the net to underfit.
--	Too much image augmentation can lead to decreased accuracy in training. 
--	Data augmentation can bring data bias, i.e. the augmented data distribution can be quite different from the original one.See [here]( https://arxiv.org/abs/2010.01267)
+-	Too much image augmentation can lead to decreased accuracy in training and validation. 
+-	Data augmentation can bring data bias, i.e. the augmented data distribution can be quite different from the original one. See [here]( https://arxiv.org/abs/2010.01267)
 
 <a name='guidelines'></a>
 ## Data Augmentation Guidelines
@@ -36,11 +38,14 @@ Cons:
 
 <a name='methods'></a>
 ## Common Image Augmentation Methods
+The landmark usage of data augmentation was by [Krizhevsky et al. 2012, ResNet](https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf), trying to  reduce overfitting on image data. In this paper, the data augmentation consists of generating image translations and horizontal reflections. Gradually more and more data augmentation methods are uses. Below is a list of common image data augmentation methods.
 1)	Horizontal flips
 -	Sometimes vertical flipping is acceptable
  <div class="fig figcenter fighighlight">
   <img src="/assets/ia/flip.jpg" width="50%">
   <div class="figcaption">
+   [This image](https://www.flickr.com/photos/malfet/1428198050) by [Nikita](https://www.flickr.com/photos/malfet/) is licensed under [CC-BY 2.0](https://creativecommons.org/licenses/by/2.0/)
+   
 
 Krizhevsky et al. 2012, ResNet
 
@@ -68,7 +73,6 @@ ResNet:
   <img src="/assets/ia/crop3.jpg" width="50%">
   <div class="figcaption">
  
-[jchen]
 
 3)	Color jitter
 -	Randomize contrast and brightness
@@ -179,9 +183,7 @@ Learning Augmentation Strategies from Data, CVPR 2019
 <a name='summary'></a>
 ## Summary
 
-   
-References:
-1)	Krizhevsky et al. 2012, ResNet
+
 2)	Cubuk et al. AutoAugment:  Learning Augmentation Strategies from Data, CVPR 2019
 3)	https://journalofbigdata.springeropen.com/articles/10.1186/s40537-019-0197-0#ref-CR6 
 4)	https://nanonets.com/blog/data-augmentation-how-to-use-deep-learning-when-you-have-limited-data-part-2/ 
