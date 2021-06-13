@@ -27,7 +27,11 @@ Data Augmentation Guidelines
 Common image augmentation methods
 1)	Horizontal flips
 -	Sometimes vertical flipping is acceptable
- 
+ <div class="fig figcenter fighighlight">
+  <img src="/assets/ia/flip.jpeg" width="50%">
+  <img src="/assets/ia/flip.jpeg" width="50%">
+  <div class="figcaption">
+
 Krizhevsky et al. 2012, ResNet
 
 2)	Crops/resize/rescale
