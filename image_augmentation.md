@@ -11,25 +11,25 @@ Table of Contents:
 
 <a name='intro'></a>
 ## Introduction
-Image augmentation is very popular in vision deep learning. Data augmentation, the technique of artificially expanding labeled training dataset. Image augmentation is used as a secret sauce in nearly every state-of-the-art model for image classification, and is becoming increasingly common in other modalities such as natural language understanding as well. [http://ai.stanford.edu/blog/data-augmentation/]
-Dao et al. 2019 show that a kernel classifier on augmented data approximately decomposes into two components: (i) an averaged version of the transformed features, and (ii) a data-dependent variance regularization term. Data augmentation model combined with a k-nearest neighbor (k-NN) classifier is asymptotically equivalent to a kernel classifier. [http://proceedings.mlr.press/v97/dao19b/dao19b.pdf]
+Data augmentation, the technique of artificially expanding labeled training dataset, is very popular in vision deep learning. It is used as a secret sauce in nearly every state-of-the-art model for image classification, and is becoming increasingly common in other modalities such as natural language understanding as well. More [threories](http://ai.stanford.edu/blog/data-augmentation/) are discussed. 
+[Dao et al. 2019](http://proceedings.mlr.press/v97/dao19b/dao19b.pdf) show that a kernel classifier on augmented data approximately decomposes into two components: (i) an averaged version of the transformed features, and (ii) a data-dependent variance regularization term. Data augmentation model combined with a k-nearest neighbor (k-NN) classifier is asymptotically equivalent to a kernel classifier.
 
 <a name='pros'></a>
 ## Pros and cons
 Pros:
-1)	Induce invariance and regularization, reduce model complexity. Improve generalization. Improve robustness, reduce overfitting. Make a CNN model to be invariant to translation, viewpoint, size or illumination. [https://openreview.net/forum?id=p84tly8c4zf]
-2)	Artificially increase training and testing dataset even you have a small dataset
-3)	Improve model generalization
+-	Induce invariance and regularization, reduce model complexity. Improve generalization. Improve robustness, reduce overfitting. Make a CNN model to be invariant to translation, viewpoint, size or illumination. See [here](https://openreview.net/forum?id=p84tly8c4zf)
+-	Artificially increase training and testing dataset even you have a small dataset
+-	Improve model generalization
 
 Cons:
-1)	Too much of image augmentation combined with other forms of regularization (weight L2, dropout) can cause the net to underfit.
-2)	Too much image augmentation can lead to decreased accuracy in training. 
-3)	Data augmentation can bring data bias, i.e. the augmented data distribution can be quite different from the original one.[ https://arxiv.org/abs/2010.01267]
+-	Too much of image augmentation combined with other forms of regularization (weight L2, dropout) can cause the net to underfit.
+-	Too much image augmentation can lead to decreased accuracy in training. 
+-	Data augmentation can bring data bias, i.e. the augmented data distribution can be quite different from the original one.See [here]( https://arxiv.org/abs/2010.01267)
 
 <a name='guidelines'></a>
 ## Data Augmentation Guidelines
 -	Data augmentation shall increase in information and a better basis for decision making. 
--	Can focus on the feature and generalize it. [https://arxiv.org/ftp/arxiv/papers/1901/1901.06032.pdf]
+-	Can focus on the feature and generalize it. See [here](https://arxiv.org/ftp/arxiv/papers/1901/1901.06032.pdf)
 -	Avoid data basis which lead to divergence
 -	As soon as the transformations can result to an image semantically consistent, i.e. you still can tell it is a cat. 
 -	Also can combine these transformations, for example, translate combined with rotate, stretch and shear, 
@@ -108,21 +108,20 @@ ResNet:
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/distortion.jpg" width="50%">
   <div class="figcaption">
-[Sebastian Lutz, et al]
-https://arrow.tudublin.ie/cgi/viewcontent.cgi?article=1001&context=impstwo 
+[Sebastian Lutz, et al](https://arrow.tudublin.ie/cgi/viewcontent.cgi?article=1001&context=impstwo)
    
 9)	Local warping
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/warp.jpg" width="50%">
   <div class="figcaption">
-https://arxiv.org/pdf/1609.08764.pdf 
-https://aapm.onlinelibrary.wiley.com/doi/abs/10.1002/mp.14651 
+[Reference1](https://arxiv.org/pdf/1609.08764.pdf)
+[Reference2](https://aapm.onlinelibrary.wiley.com/doi/abs/10.1002/mp.14651)
    
 10)	Erasing
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/erise.jpg" width="50%">
   <div class="figcaption">
-https://ojs.aaai.org/index.php/AAAI/article/view/7000 
+[Reference](https://ojs.aaai.org/index.php/AAAI/article/view/7000)
 
 11)	Contrast / histogram processing 
   <div class="fig figcenter fighighlight">
