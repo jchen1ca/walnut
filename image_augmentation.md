@@ -20,6 +20,7 @@ Table of Contents:
    - [Filter Kernel](#filter)
    - [Mix Images](#mix)
    - [Image Simulation](#simulation)
+   - [GAN Based](#gan)
 - [Situations not Applicable](#applicable)
 - [Common image Data Augmentation Packages](#package)
 
@@ -206,6 +207,14 @@ This  paper  ex-ploresdomain  randomization,  a  simple  technique  for  trainin
   <img src="/assets/ia/simulation.jpg" width="50%">
   <div class="figcaption">
 
+     
+<a name='gan'></a>
+### 17)	GAN based
+This paper uses GAN to generate synthetic medical images. By adding the synthetic dataaugmentation the results significantly increased to 85.7% sensitivity and 92.4% specificity. While the classification performance using only classic data augmentation yielded 78.6%sensitivity and 88.4% specificity. [Maayan Frid-Adar, et al, 2018](https://arxiv.org/pdf/1801.02385.pdf)
+  <div class="fig figcenter fighighlight">
+  <img src="/assets/ia/gan.jpg" width="50%">
+  <div class="figcaption">
+     
      
 <a name='applicable'></a>
 ## Situations that Data Augmentation is  not Applicable
