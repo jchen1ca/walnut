@@ -26,8 +26,7 @@ Table of Contents:
 
 <a name='intro'></a>
 ## Introduction
-Data augmentation, the technique of artificially expanding training dataset, is very popular in vision deep learning. It is used as a secret sauce in nearly every state-of-the-art model for image classification, and is becoming increasingly common in other modalities such as natural language understanding as well. Except practicing and examples, there are more and more [threories](http://ai.stanford.edu/blog/data-augmentation/) trying to explain how data augmentation works. 
-[Dao et al. 2019](http://proceedings.mlr.press/v97/dao19b/dao19b.pdf) show that data augmentation model combined with a k-nearest neighbor (k-NN) classifier is asymptotically equivalent to a kernel classifier. It can be approximately decomposed into two components: (i) an averaged version of the transformed features, and (ii) a data-dependent variance regularization term.
+Data augmentation, the technique of artificially expanding training dataset, is very popular in vision deep learning. It is used as a secret sauce in nearly every state-of-the-art model for image classification, and is becoming increasingly common in other modalities such as natural language understanding as well[[Sharon Y. Li 2020]](http://ai.stanford.edu/blog/data-augmentation/). Except practicing and examples, there are more and more threories trying to explain how data augmentation works. [Dao et al. 2019](http://proceedings.mlr.press/v97/dao19b/dao19b.pdf) show that data augmentation model combined with a k-nearest neighbor (k-NN) classifier is asymptotically equivalent to a kernel classifier. It can be approximately decomposed into two components: (i) an averaged version of the transformed features, and (ii) a data-dependent variance regularization term.
 
 <a name='pros'></a>
 ## Data Augmentation Pros and cons
@@ -36,18 +35,18 @@ There are advantages and disadvantages of Data augmentation for improving deep l
 -	Induce invariance and regularization, reduce model complexity. 
 -	Improve generalization. 
 -	Improve robustness, reduce overfitting. 
--	Make a CNN model to be invariant to translation, viewpoint, size or illumination. [Link](https://openreview.net/forum?id=p84tly8c4zf)
+-	Make a CNN model to be invariant to translation, viewpoint, size or illumination. [[Yi Xu, et al, 2021]](https://openreview.net/forum?id=p84tly8c4zf)
 -	Artificially increase training and testing dataset even you have a small dataset
 
 **Cons:**
 -	Too much of image augmentation combined with other forms of regularization (weight L2, dropout) can cause the net to underfit.
 -	Too much image augmentation can lead to decreased accuracy in training and validation. 
--	Data augmentation can bring data bias, i.e. the augmented data distribution can be quite different from the original one. [Link]( https://arxiv.org/abs/2010.01267)
+-	Data augmentation can bring data bias, i.e. the augmented data distribution can be quite different from the original one. [[Yi Xu, et al, 2020]]( https://arxiv.org/pdf/2010.01267.pdf)
 
 <a name='guidelines'></a>
 ## Data Augmentation Guidelines
 -	Data augmentation shall increase in information and a better basis for decision making. 
--	Can focus on the feature and generalize it. [Link](https://arxiv.org/ftp/arxiv/papers/1901/1901.06032.pdf)
+-	Can focus on the feature and generalize it. [[Asifullah Khan, et al, 2020]](https://arxiv.org/ftp/arxiv/papers/1901/1901.06032.pdf)
 -	Avoid data basis which lead to divergence
 -	As soon as the transformations can result to an image semantically consistent, i.e. you still can tell it is a cat. 
 -	Also can combine these transformations, for example, translate combined with rotate, stretch and shear, 
@@ -58,9 +57,9 @@ There are advantages and disadvantages of Data augmentation for improving deep l
 
 <a name='flips'></a>
 ### 1)	Horizontal flips
-Mirror each pixel with the vertical axis of the image. Horizontal flipping is widely used in almost all image augmentation. It is more popular than vertical flipping which sometimes is not appliable.
+This example is used in CS231N lecture 8. Horizontal flipping is widely used in almost all image augmentation. It is more popular than vertical flipping which sometimes is not appliable. Horizontal flips is also called mirror image horizontally. 
  <div class="fig figcenter fighighlight">
-  <img src="/assets/ia/flip.jpg" width="50%">
+  <img src="/assets/ia/flip.jpg" width="40%">
   <div class="figcaption">
    
  [This image](https://www.flickr.com/photos/malfet/1428198050) by [Nikita](https://www.flickr.com/photos/malfet/) is licensed under [CC-BY2.0](https://creativecommons.org/licenses/by/2.0/)
@@ -75,7 +74,7 @@ Resnet:
    -	Resize training image, short side = L
    -	Sample random 224x224 patch
   <div class="fig figcenter fighighlight">
-  <img src="/assets/ia/crop1.jpg" width="25%">
+  <img src="/assets/ia/crop1.jpg" width="20%">
   <div class="figcaption">
 
 Testing: average a fixed set of crops\
@@ -85,7 +84,7 @@ ResNet:
  <div class="fig figcenter fighighlight">
   <img src="/assets/ia/crop2.jpg" width="50%">
   <div class="figcaption">
- 
+  <br/>
  <div class="fig figcenter fighighlight">
   <img src="/assets/ia/crop3.jpg" width="50%">
   <div class="figcaption">
@@ -104,17 +103,19 @@ ResNet:
 
 <a name='translation'></a>
 ### 4)	Translation
-Translation is to shift the image left or right, up or down, on a ratio that defines how much maximum to shift. To resize the image back to its original dimensions Keras by default uses a filling mode called ‘nearest’.
+Translation is to shift the image left or right, up or down, on a ratio that defines how much maximum to shift. To resize the image back to its original dimensions Keras by default uses a filling mode called ‘nearest’. In the following example, we assume that the image has a black background beyond its boundary, and are translated appropriately. This method of augmentation is very useful as most objects can be located at almost anywhere in the image. This forces your convolutional neural network to look everywhere. [Arun Gandhi, 2021](https://nanonets.com/blog/data-augmentation-how-to-use-deep-learning-when-you-have-limited-data-part-2/)
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/translation.jpg" width="50%">
   <div class="figcaption">
    
 <a name='rotation'></a>
 ### 5)	Rotation 
+Rotation is a nasty data augmentation due to the blank border after rotating an angle not 90 or 180 degree. [Arun Gandhi, 2021](https://nanonets.com/blog/data-augmentation-how-to-use-deep-learning-when-you-have-limited-data-part-2/)
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/rotation.jpg" width="50%">
   <div class="figcaption">
   
+     
 <a name='stretching'></a>
 ### 6)	Stretching
 -	Contrast stretching 
@@ -131,45 +132,47 @@ Translation is to shift the image left or right, up or down, on a ratio that def
    
 <a name='distortion'></a>
 ### 8)	Lens distortions
--	In different viewpoint, lens distortion describe the object differently in scale and correlation
+In different viewpoint, lens distortion describe the object differently in scale and correlation
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/distortion.jpg" width="50%">
   <div class="figcaption">
      
-[Sebastian Lutz, et al] (https://arrow.tudublin.ie/cgi/viewcontent.cgi?article=1001&context=impstwo)
+[Sebastian Lutz, et al, 2019] (https://arrow.tudublin.ie/cgi/viewcontent.cgi?article=1001&context=impstwo)
    
 <a name='warp'></a>
 ### 9)	Local warping
+This paper uses local warping to create more smaples when training a machine learning classifier. New data is generated through transformations applied in the data-space. This provides a great benefit for imporving performance and reducing overfitting.
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/warp.jpg" width="50%">
   <div class="figcaption">
      
-[Link1](https://arxiv.org/pdf/1609.08764.pdf)
-[Link2](https://aapm.onlinelibrary.wiley.com/doi/abs/10.1002/mp.14651)
+[Sebastien C. Wong, et al, 2016](https://arxiv.org/pdf/1609.08764.pdf)
+[Hong Liu, et al, 2020](https://aapm.onlinelibrary.wiley.com/doi/abs/10.1002/mp.14651)
    
 <a name='erase'></a>
 ### 10)	Erasing
+This paper introduces random erasing data augmentation method for training the convolutional neural network (CNN). In training, random erasing randomly selects a rectangle region in an image and erases its pixels with random values. In this process, training images with various levels of occlusion are generated, which reduces the risk of over-fitting and makes the model robust to occlusion. Random Erasing is parameter learning free, easy to implement, and can be integrated with most of the CNN-based recognition models. [Zhun Zhong, et al, 2019]( https://ojs.aaai.org/index.php/AAAI/article/view/7000 )
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/erise.jpg" width="50%">
   <div class="figcaption">
      
-[Link]( https://ojs.aaai.org/index.php/AAAI/article/view/7000 )
 
 <a name='contrast'></a>
 ### 11)	Contrast / histogram processing 
-Change image contrast by maximize image histogram. The newly created images can be used to pre-train the given neural network in order to improve the training process efficiency. But data deficiency is one of the most relevant issues. 
+Change image contrast by maximize image histogram. The newly created images can be used to pre-train the given neural network in order to improve the training process efficiency. But data deficiency is one of the most relevant issues. [Agnieszka M. et al, 2018](https://ieeexplore.ieee.org/abstract/document/8388338)
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/contrast.jpg" width="50%">
   <div class="figcaption">
-     
-See the link [Agnieszka M. et al, 2018](https://ieeexplore.ieee.org/abstract/document/8388338)
+    
      
 <a name='noise'></a>
-### 12)	Blur image / add Gaussian noise
+### 12)	Add Gaussian noise
+Over-fitting usually happens when your neural network tries to learn high frequency features (patterns that occur a lot) that may not be useful. Gaussian noise, which has zero mean, essentially has data points in all frequencies, effectively distorting the high frequency features. This also means that lower frequency components (usually, your intended data) are also distorted, but your neural network can learn to look past that. Adding just the right amount of noise can enhance the learning capability. [Arun Gandhi, 2021](https://nanonets.com/blog/data-augmentation-how-to-use-deep-learning-when-you-have-limited-data-part-2/)
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/noise.jpg" width="50%">
   <div class="figcaption">
 
+     
 <a name='reinforcement'></a>
 ### 13)	Using reinforcement learning to do image data augmentation 
   <div class="fig figcenter fighighlight">
