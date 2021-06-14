@@ -210,8 +210,8 @@ This  paper  ex-ploresdomain  randomization,  a  simple  technique  for  trainin
      
 <a name='applicable'></a>
 ## Situations that Data Augmentation is  not Applicable
-1)	OCR can’t use vertical flipping, because “6” after flipping is “9”.
-2)	
+Not every image data augmentation method can be used for any applications. We need to consider the infomation that the data augmentation added. Sometimes a data augmentation method can mess up the dataset. For example, in numerical OCR model training, we can’t use vertical flipping, because “6” becomes to "9" after vertical flipping.
+
 
 <a name='package'></a>
 ## Common image Augmentation Packages
