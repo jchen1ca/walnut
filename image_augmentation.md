@@ -39,15 +39,14 @@ Cons:
 <a name='methods'></a>
 ## Common Image Augmentation Methods
 The landmark usage of data augmentation was by [Krizhevsky et al. 2012, ResNet](https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf), trying to  reduce overfitting on image data. In this paper, the data augmentation consists of generating image translations and horizontal reflections. Gradually more and more data augmentation methods are uses. Below is a list of common image data augmentation methods.
+
 1)	Horizontal flips
 -	Sometimes vertical flipping is acceptable
  <div class="fig figcenter fighighlight">
   <img src="/assets/ia/flip.jpg" width="50%">
   <div class="figcaption">
-   [This image](https://www.flickr.com/photos/malfet/1428198050) by [Nikita](https://www.flickr.com/photos/malfet/) is licensed under [CC-BY 2.0](https://creativecommons.org/licenses/by/2.0/)
    
-
-Krizhevsky et al. 2012, ResNet
+   [This image](https://www.flickr.com/photos/malfet/1428198050) by [Nikita](https://www.flickr.com/photos/malfet/) is licensed under [CC-BY2.0](https://creativecommons.org/licenses/by/2.0/)
 
 2)	Crops/resize/rescale
 A section of the image is sampled randomly. 
