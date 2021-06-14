@@ -117,14 +117,14 @@ Rotation is a nasty data augmentation due to the blank border after rotating an 
      
 <a name='stretching'></a>
 ### 6)	Stretching
--	Contrast stretching 
+The contrast stretching is a tool to normalize or narrow image contrast. This provides model with the chance to detect objects in blur or foggy situation.
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/stretch.jpg" width="50%">
   <div class="figcaption">
    
 <a name='shearing'></a>
 ### 7)	Shearing
--	To change rectangle image to parallelogram
+Shearing is a bounding box transformation that can be done with the help of the transformation matrix. In shearing, we turn the rectangular image into a parallelogrammed image. [Ayoosh Kathuria, 2018](https://blog.paperspace.com/data-augmentation-for-object-detection-rotation-and-shearing/). Shearing can describe the situation when the camera is in a skewed view angle.
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/shear.jpg" width="50%">
   <div class="figcaption">
