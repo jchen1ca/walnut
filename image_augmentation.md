@@ -1,11 +1,11 @@
 Table of Contents:
 
 - [Introduction](#intro)
-- [Pros and Cons](#pros)
-- [Data Augmentation Guidelines](#guidelines)
-- [Common Image Augmentation Methods](#methods)
-   - [Flips](#flips)
-   - [Crops](#crops)
+- [Image Data Augmentation Pros and Cons](#pros)
+- [Image Data Augmentation Guidelines](#guidelines)
+- [Common Image Data Augmentation Methods](#methods)
+   - [Flipping](#flips)
+   - [Cropping](#crops)
    - [Color Jitter](#jitter)
    - [Translation](#translation)
    - [Rotation ](#rotation)
@@ -21,14 +21,14 @@ Table of Contents:
    - [Mix Images](#mix)
    - [Image Simulation](#simulation)
 - [Situations not Applicable](#applicable)
-- [Common image Augmentation Packages](#package)
+- [Common image Data Augmentation Packages](#package)
 
 <a name='intro'></a>
 ## Introduction
 Data augmentation, the technique of artificially expanding training dataset, is very popular in vision deep learning. It is used as a secret sauce in nearly every state-of-the-art model for image classification, and is becoming increasingly common in other modalities such as natural language understanding as well[[Sharon Y. Li 2020]](http://ai.stanford.edu/blog/data-augmentation/). Except practicing and examples, there are more and more threories trying to explain how data augmentation works. [Dao et al. 2019](http://proceedings.mlr.press/v97/dao19b/dao19b.pdf) show that data augmentation model combined with a k-nearest neighbor (k-NN) classifier is asymptotically equivalent to a kernel classifier. It can be approximately decomposed into two components: (i) an averaged version of the transformed features, and (ii) a data-dependent variance regularization term.
 
 <a name='pros'></a>
-## Data Augmentation Pros and cons
+## Image Data Augmentation Pros and cons
 There are advantages and disadvantages of Data augmentation for improving deep learning in image classification problem.\
 **Pros:**
 -	Induce invariance and regularization, reduce model complexity. 
@@ -43,7 +43,7 @@ There are advantages and disadvantages of Data augmentation for improving deep l
 -	Data augmentation can bring data bias, i.e. the augmented data distribution can be quite different from the original one. [[Yi Xu, et al, 2020]]( https://arxiv.org/pdf/2010.01267.pdf)
 
 <a name='guidelines'></a>
-## Data Augmentation Guidelines
+## Image Data Augmentation Guidelines
 -	Data augmentation shall increase in information and a better basis for decision making. 
 -	Can focus on the feature and generalize it. [[Asifullah Khan, et al, 2020]](https://arxiv.org/ftp/arxiv/papers/1901/1901.06032.pdf)
 -	Avoid data basis which lead to divergence
@@ -51,11 +51,11 @@ There are advantages and disadvantages of Data augmentation for improving deep l
 -	Also can combine these transformations, for example, translate combined with rotate, stretch and shear, 
 
 <a name='methods'></a>
-## Common Image Augmentation Methods
+## Common Image Data Augmentation Methods
 [Krizhevsky et al. 2012, ResNet](https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf), used data augmentation to  reduce overfitting on image data. In that paper, the data augmentation consists of generating image translations and horizontal reflections, and proves to reduce overfitting and increase prediction accuracy. Generally, we can classify image data augmentation into two main groups: **position augmentation**, which includes scaling, cropping, flipping, padding, rotation, translation, affine transformation; and **color augmentation** which includes brightness, contrast, saturation, hue[Harshit Kumar, 2021](https://iq.opengenus.org/data-augmentation/). New data augmentation methods are introduced to image data deep learning, such as mixing, simulation, GAN based, etc. Below is a list of common image data augmentation methods.
 
 <a name='flips'></a>
-### 1)	Horizontal flips
+### 1)	Horizontal flipping
 This example is used in CS231N lecture 8. Horizontal flipping is widely used in almost all image augmentation. It is more popular than vertical flipping which sometimes is not appliable. Horizontal flips is also called mirror image horizontally. 
  <div class="fig figcenter fighighlight">
   <img src="/assets/ia/flip.jpg" width="40%">
@@ -64,7 +64,7 @@ This example is used in CS231N lecture 8. Horizontal flipping is widely used in 
  [This image](https://www.flickr.com/photos/malfet/1428198050) by [Nikita](https://www.flickr.com/photos/malfet/) is licensed under [CC-BY2.0](https://creativecommons.org/licenses/by/2.0/)
 
 <a name='crops'></a>
-### 2)	Crops
+### 2)	Cropping
 A section of the image is sampled randomly. Normally followed by image resize or rescale. Crop partial of the original image for training can force the model to find the cat even it's partially present, for example, see its tail only.\
 Training: sample random crops/scales\
 Resnet:
@@ -131,12 +131,11 @@ Shearing is a bounding box transformation that can be done with the help of the 
    
 <a name='distortion'></a>
 ### 8)	Lens distortions
-In different viewpoint, lens distortion describe the object differently in scale and correlation
+In different viewpoint, lens distortion describe the object differently in scale and correlation. Understanding the impact of lens distortion on deep learning can help us to use image augmentation to remediate the influence.  [Sebastian Lutz, et al, 2019](https://arrow.tudublin.ie/cgi/viewcontent.cgi?article=1001&context=impstwo)
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/distortion.jpg" width="50%">
   <div class="figcaption">
-     
-[Sebastian Lutz, et al, 2019](https://arrow.tudublin.ie/cgi/viewcontent.cgi?article=1001&context=impstwo)
+    
    
 <a name='warp'></a>
 ### 9)	Local warping
@@ -214,7 +213,7 @@ Not every image data augmentation method can be used for any applications. We ne
 
 
 <a name='package'></a>
-## Common image Augmentation Packages
+## Common image Data Augmentation Packages
 -	keras.preprocessing.image.[ImageDataGenerator](https://www.tensorflow.org/api_docs/python/tf/keras/preprocessing/image/ImageDataGenerator)
 -	[imaug](https://imgaug.readthedocs.io/en/latest/)
 -	[albumentations](https://albumentations.ai/)
