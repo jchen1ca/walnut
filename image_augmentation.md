@@ -22,7 +22,6 @@ Table of Contents:
    - [Image Simulation](#simulation)
 - [Situations not Applicable](#applicable)
 - [Common image Augmentation Packages](#package)
-- [Summary](#summary)
 
 <a name='intro'></a>
 ## Introduction
@@ -66,7 +65,7 @@ This example is used in CS231N lecture 8. Horizontal flipping is widely used in 
 
 <a name='crops'></a>
 ### 2)	Crops
-A section of the image is sampled randomly. Normally followed by image resize or rescale.\
+A section of the image is sampled randomly. Normally followed by image resize or rescale. Crop partial of the original image for training can force the model to find the cat even it's partially present, for example, see its tail only.\
 Training: sample random crops/scales\
 Resnet:
    -	Cat is partially missed in each image
@@ -137,7 +136,7 @@ In different viewpoint, lens distortion describe the object differently in scale
   <img src="/assets/ia/distortion.jpg" width="50%">
   <div class="figcaption">
      
-[Sebastian Lutz, et al, 2019] (https://arrow.tudublin.ie/cgi/viewcontent.cgi?article=1001&context=impstwo)
+[Sebastian Lutz, et al, 2019](https://arrow.tudublin.ie/cgi/viewcontent.cgi?article=1001&context=impstwo)
    
 <a name='warp'></a>
 ### 9)	Local warping
@@ -174,21 +173,24 @@ Over-fitting usually happens when your neural network tries to learn high freque
 
      
 <a name='reinforcement'></a>
-### 13)	Using reinforcement learning to do image data augmentation 
+### 13)	Using reinforcement learning to for image data augmentation 
+This paper describes a procedure called AutoAugment to automatically search for improved dataaugmentation policies. And use the search algorithm to find the best policy such that the neural network yields the highest validation accuracy on a target dataset. [Cubuk et al. 2019](https://openaccess.thecvf.com/content_CVPR_2019/papers/Cubuk_AutoAugment_Learning_Augmentation_Strategies_From_Data_CVPR_2019_paper.pdf)
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/reinforce.jpg" width="50%">
   <div class="figcaption">
-Cubuk et al. AutoAugment: 
-Learning Augmentation Strategies from Data, CVPR 2019
+
 
 <a name='filter'></a>
 ### 14)	 Apply Filter kernel
+Kernel filters are a very popular technique in image processing to sharpen and blur images. These filters work by sliding an n × n matrix across an image with either a Gaussian blur filter, which will result in a blurrier image, or a high contrast vertical or horizontal edge filter which will result in a sharper image along edges. Intuitively, blurring images for Data Augmentation could lead to higher resistance to motion blur during testing. Additionally, sharpening images for Data Augmentation could result in encapsulating more details about objects of interest. [Guoliang K, et al. 2017](https://arxiv.org/pdf/1707.07103.pdf)
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/filterKernel.jpg" width="50%">
   <div class="figcaption">
    
+     
 <a name='mix'></a>
 ### 15)	 Mix images
+The concept of mixing images in an unintuitive way was further investigated by [Summers and Dinneen](https://arxiv.org/pdf/1805.11272.pdf). They looked at using non-linear methods to combine images into new training instances. All of the methods they used resulted in better performance compared to the baseline models. 
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/mixed.jpg" width="50%">
   <div class="figcaption">
@@ -197,12 +199,15 @@ Another example: Train on rando blends of images, i.e. 40% cat, 60% dog. Then us
   <img src="/assets/ia/blend.jpg" width="50%">
   <div class="figcaption">
    
+     
 <a name='simulation'></a>
 ### 16)	Image simulation
+This  paper  ex-ploresdomain  randomization,  a  simple  technique  for  trainingmodels on simulated images that transfer to real images by ran-domizing rendering in the simulator. With enough variability inthe simulator,  the real  world may  appear to  the model  as justanother  variation.  [Josh Tabin, et al, 2017](https://arxiv.org/pdf/1703.06907.pdf)
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/simulation.jpg" width="50%">
   <div class="figcaption">
 
+     
 <a name='applicable'></a>
 ## Situations that Data Augmentation is  not Applicable
 1)	OCR can’t use vertical flipping, because “6” after flipping is “9”.
@@ -217,18 +222,3 @@ Another example: Train on rando blends of images, i.e. 40% cat, 60% dog. Then us
 -	[augmentor](https://augmentor.readthedocs.io/en/master/)
 -	[skimage](https://scikit-image.org/docs/dev/api/skimage.html)
 -	[solt](https://mipt-oulu.github.io/solt/)
-   
-<a name='example'></a>
-## Examples on how to use image augmentation
--	Procedures on how to choose augmentation methods
--	How to evaluation and test the augmentation
--	Analysis and comments
-
-<a name='summary'></a>
-## Summary
-
-
-2)	Cubuk et al. AutoAugment:  Learning Augmentation Strategies from Data, CVPR 2019
-3)	https://journalofbigdata.springeropen.com/articles/10.1186/s40537-019-0197-0#ref-CR6 
-4)	https://nanonets.com/blog/data-augmentation-how-to-use-deep-learning-when-you-have-limited-data-part-2/ 
-5)	https://blog.paperspace.com/data-augmentation-for-object-detection-rotation-and-shearing/ 
