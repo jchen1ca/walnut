@@ -52,7 +52,7 @@ There are advantages and disadvantages of Data augmentation for improving deep l
 
 <a name='methods'></a>
 ## Common Image Augmentation Methods
-[Krizhevsky et al. 2012, ResNet](https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf), used data augmentation to  reduce overfitting on image data. In this paper, the data augmentation consists of generating image translations and horizontal reflections. Now more and more data augmentation methods are introduced to image data deep learning. Below is a list of common image data augmentation methods.
+[Krizhevsky et al. 2012, ResNet](https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf), used data augmentation to  reduce overfitting on image data. In that paper, the data augmentation consists of generating image translations and horizontal reflections, and proves to reduce overfitting and increase prediction accuracy. Generally, we can classify image data augmentation into two main groups: **position augmentation**, which includes scaling, cropping, flipping, padding, rotation, translation, affine transformation; and **color augmentation** which includes brightness, contrast, saturation, hue[Harshit Kumar, 2021](https://iq.opengenus.org/data-augmentation/). New data augmentation methods are introduced to image data deep learning, such as mixing, simulation, GAN based, etc. Below is a list of common image data augmentation methods.
 
 <a name='flips'></a>
 ### 1)	Horizontal flips
@@ -109,7 +109,7 @@ Translation is to shift the image left or right, up or down, on a ratio that def
    
 <a name='rotation'></a>
 ### 5)	Rotation 
-Rotation is a nasty data augmentation due to the blank border after rotating an angle not 90 or 180 degree. [Arun Gandhi, 2021](https://nanonets.com/blog/data-augmentation-how-to-use-deep-learning-when-you-have-limited-data-part-2/)
+Rotation can provide the cases of different orientation so model can learn to look for the object in various possibility. Rotation is a nasty data augmentation due to the blank border after rotating an angle not 90 or 180 degree. [Arun Gandhi, 2021](https://nanonets.com/blog/data-augmentation-how-to-use-deep-learning-when-you-have-limited-data-part-2/)
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/rotation.jpg" width="50%">
   <div class="figcaption">
