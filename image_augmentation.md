@@ -22,7 +22,6 @@ Table of Contents:
    - [Image Simulation](#simulation)
 - [Situations not Applicable](#applicable)
 - [Common image Augmentation Packages](#package)
-- [Examples](#example)
 - [Summary](#summary)
 
 <a name='intro'></a>
