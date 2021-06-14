@@ -4,6 +4,22 @@ Table of Contents:
 - [Pros and Cons](#pros)
 - [Data Augmentation Guidelines](#guidelines)
 - [Common Image Augmentation Methods](#methods)
+   - [Flips](#flips)
+   - [Crops](#crops)
+   - [Color Jitter](#jitter)
+   - [Translation](#translation)
+   - [Rotation ](#rotation)
+   - [Stretching](#stretching)
+   - [Shearing](#shearing)
+   - [Lens Distortions](#distortion)
+   - [Local Warping](#warp)
+   - [Erasing](#erase)
+   - [Contrast](#contrast)
+   - [Gaussian Noise](#noise)
+   - [Reinforcement](#reinforcement)
+   - [Filter Kernel](#filter)
+   - [Mix Images](#mix)
+   - [Image Simulation](#simulation)
 - [Situations not Applicable](#applicable)
 - [Common image Augmentation Packages](#package)
 - [Examples](#example)
@@ -40,30 +56,33 @@ Cons:
 ## Common Image Augmentation Methods
 The landmark usage of data augmentation was by [Krizhevsky et al. 2012, ResNet](https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf), trying to  reduce overfitting on image data. In this paper, the data augmentation consists of generating image translations and horizontal reflections. Gradually more and more data augmentation methods are uses. Below is a list of common image data augmentation methods.
 
-1)	Horizontal flips
--	Sometimes vertical flipping is acceptable
+
+<a name='flips'></a>
+### 1)	Horizontal flips
+Mirror each pixel with the vertical axis of the image. Horizontal flipping is widely used in almost all image augmentation. It is more popular than vertical flipping which sometimes is not appliable.
  <div class="fig figcenter fighighlight">
   <img src="/assets/ia/flip.jpg" width="50%">
   <div class="figcaption">
    
    [This image](https://www.flickr.com/photos/malfet/1428198050) by [Nikita](https://www.flickr.com/photos/malfet/) is licensed under [CC-BY2.0](https://creativecommons.org/licenses/by/2.0/)
 
-2)	Crops/resize/rescale
-A section of the image is sampled randomly. 
+<a name='crops'></a>
+### 2)	Crops
+A section of the image is sampled randomly. Normally followed by image resize or rescale.
 Training: sample random crops/scales
 Resnet:
--	Cat is partially missed in each image
--	Pick random L in range [256,480]
--	Resize training image, short side = L
--	Sample random 224x224 patch
+   -	Cat is partially missed in each image
+   -	Pick random L in range [256,480]
+   -	Resize training image, short side = L
+   -	Sample random 224x224 patch
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/crop1.jpg" width="25%">
   <div class="figcaption">
 
 Testing: average a fixed set of crops
 ResNet:
--	Resize image at 5 scales: {224,256,384,480,640}
--	For each size, use 10 224x224 crops: (4 corners + 1 center)  x flips 
+   -	Resize image at 5 scales: {224,256,384,480,640}
+   -	For each size, use 10 224x224 crops: (4 corners + 1 center)  x flips 
  <div class="fig figcenter fighighlight">
   <img src="/assets/ia/crop2.jpg" width="50%">
   <div class="figcaption">
@@ -72,106 +91,120 @@ ResNet:
   <img src="/assets/ia/crop3.jpg" width="50%">
   <div class="figcaption">
  
+<a name='jitter'></a>
+### 3)	Color jitter
 
-3)	Color jitter
--	Randomize contrast and brightness
--	Apply PCA to all R,G,B channels in training set
--	Sample color offset along principal component directions
--	Add grayscale offset to all pixels of a training image
-
--	Hue jitter shifts the hue by a random amount
+   -	Randomize contrast and brightness
+   -	Apply PCA to all R,G,B channels in training set
+   -	Sample color offset along principal component directions
+   -	Add grayscale offset to all pixels of a training image
+   -	Hue jitter shifts the hue by a random amount
  <div class="fig figcenter fighighlight">
   <img src="/assets/ia/color_jitter.jpg" width="50%">
   <div class="figcaption"> 
 
-4)	Translation
+<a name='translation'></a>
+### 4)	Translation
+Translation is to shift the image left or right, up or down, on a ratio that defines how much maximum to shift. To resize the image back to its original dimensions Keras by default uses a filling mode called ‘nearest’.
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/translation.jpg" width="50%">
   <div class="figcaption">
    
-5)	Rotation 
+<a name='rotation'></a>
+### 5)	Rotation 
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/rotation.jpg" width="50%">
   <div class="figcaption">
-   
-6)	Stretching
+  
+<a name='stretching'></a>
+### 6)	Stretching
 -	Contrast stretching 
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/stretch.jpg" width="50%">
   <div class="figcaption">
    
-7)	Shearing
+<a name='shearing'></a>
+### 7)	Shearing
 -	To change rectangle image to parallelogram
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/shear.jpg" width="50%">
   <div class="figcaption">
    
-8)	Lens distortions
+<a name='distortion'></a>
+### 8)	Lens distortions
 -	In different viewpoint, lens distortion describe the object differently in scale and correlation
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/distortion.jpg" width="50%">
   <div class="figcaption">
-[Sebastian Lutz, et al](https://arrow.tudublin.ie/cgi/viewcontent.cgi?article=1001&context=impstwo)
+[Sebastian Lutz, et al] (https://arrow.tudublin.ie/cgi/viewcontent.cgi?article=1001&context=impstwo)
    
-9)	Local warping
+<a name='warp'></a>
+### 9)	Local warping
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/warp.jpg" width="50%">
   <div class="figcaption">
-[Reference1](https://arxiv.org/pdf/1609.08764.pdf)
-[Reference2](https://aapm.onlinelibrary.wiley.com/doi/abs/10.1002/mp.14651)
+[Reference1] (https://arxiv.org/pdf/1609.08764.pdf)
+[Reference2] (https://aapm.onlinelibrary.wiley.com/doi/abs/10.1002/mp.14651)
    
-10)	Erasing
+<a name='erase'></a>
+### 10)	Erasing
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/erise.jpg" width="50%">
   <div class="figcaption">
-[Reference](https://ojs.aaai.org/index.php/AAAI/article/view/7000)
+See [Reference]( https://ojs.aaai.org/index.php/AAAI/article/view/7000 ).
 
-11)	Contrast / histogram processing 
+<a name='contrast'></a>
+### 11)	Contrast / histogram processing 
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/contrast.jpg" width="50%">
   <div class="figcaption">
 
-12)	Blur image / add Gaussian noise
+<a name='noise'></a>
+### 12)	Blur image / add Gaussian noise
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/noise.jpg" width="50%">
   <div class="figcaption">
 
-13)	Using reinforcement learning to do image data augmentation 
+<a name='reinforcement'></a>
+### 13)	Using reinforcement learning to do image data augmentation 
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/reinforce.jpg" width="50%">
   <div class="figcaption">
 Cubuk et al. AutoAugment: 
 Learning Augmentation Strategies from Data, CVPR 2019
 
-14)	 Apply Filter kernel
+<a name='filter'></a>
+### 14)	 Apply Filter kernel
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/filterKernel.jpg" width="50%">
   <div class="figcaption">
    
-15)	 Mix images
+<a name='mix'></a>
+### 15)	 Mix images
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/mixed.jpg" width="50%">
   <div class="figcaption">
    
-16)	Image simulation
+<a name='simulation'></a>
+### 16)	Image simulation
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/simulation.jpg" width="50%">
   <div class="figcaption">
 
 <a name='applicable'></a>
-## Situations not Applicable
+## Situations that Data Augmentation is  not Applicable
 1)	OCR can’t use vertical flipping, because “6” after flipping is “9”.
 2)	
 
 <a name='package'></a>
 ## Common image Augmentation Packages
-•	keras.preprocessing.image.ImageDataGenerator
-•	imaug
-•	albumentations
-•	opencv
-•	augmentor
-•	skimage
-•	SOLT
+-	keras.preprocessing.image.[ImageDataGenerator](https://www.tensorflow.org/api_docs/python/tf/keras/preprocessing/image/ImageDataGenerator)
+-	[imaug](https://imgaug.readthedocs.io/en/latest/)
+-	[albumentations](https://albumentations.ai/)
+-	[opencv](https://towardsdatascience.com/complete-image-augmentation-in-opencv-31a6b02694f5)
+-	augmentor
+-	skimage
+-	SOLT
    
 <a name='example'></a>
 ## Examples on how to use image augmentation
