@@ -36,7 +36,7 @@ There are more threories trying to explain how data augmentation works. [Dao et 
 
 <a name='methods'></a>
 ## Common Image Data Augmentation Methods
-[Krizhevsky et al. 2012, ResNet](https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf) is one of the first papers to use data augmentation to reduce overfitting and improve model's generalization in deep learning. In that paper, the data augmentation consists of generating image translations and horizontal reflections, and proves to reduce overfitting and increase prediction accuracy. Generally, we can classify image data augmentation into two main groups: **position augmentation**, which includes scaling, cropping, flipping, padding, rotation, translation, affine transformation; and **color augmentation** which includes brightness, contrast, saturation, hue[Harshit Kumar, 2021](https://iq.opengenus.org/data-augmentation/). New data augmentation methods are introduced to image data deep learning, such as mixing, simulation, GAN based, etc. We can also combine some of the methods together to get entirely new datapoints. Below is a list of common image data augmentation methods.
+[Krizhevsky et al. 2012, ResNet](https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf) is one of the first papers to use data augmentation to reduce overfitting and improve model's generalization in deep learning. In that paper, the data augmentation consists of generating image translations and horizontal reflections, and proves to reduce overfitting and increase prediction accuracy. Generally, we can classify image data augmentation into two main groups: **position augmentation**, which includes scaling, cropping, flipping, padding, rotation, translation, affine transformation; and **color augmentation** which includes brightness, contrast, saturation, hue[Harshit Kumar, 2021](https://iq.opengenus.org/data-augmentation/). New data augmentation methods are introduced to image data deep learning, such as mixing, simulation, GAN based, etc. We can also combine some of the methods together to get entirely new datapoints. For example an affine transformation can include random rotation, translation, zoom, shear. Below is a list of common image data augmentation methods.
 
 <a name='flips'></a>
 ### 1)	Horizontal flips
@@ -93,7 +93,7 @@ Translation is to shift the image left or right, up or down, on a ratio that def
    
 <a name='rotation'></a>
 ### 5)	Rotation 
-Rotation can provide the cases of different orientation so model can learn to look for the object in various possibility. Rotation is a nasty data augmentation due to the blank border after rotating an angle not 90 or 180 degree. [Arun Gandhi, 2021](https://nanonets.com/blog/data-augmentation-how-to-use-deep-learning-when-you-have-limited-data-part-2/)
+Rotation can provide the cases of different orientation so model can learn to look for the object in various possibility. Rotation is a nasty data augmentation due to the blank border after rotating an angle not 90 or 180 degree. We need to fix the blank area issue. [Arun Gandhi, 2021](https://nanonets.com/blog/data-augmentation-how-to-use-deep-learning-when-you-have-limited-data-part-2/)
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/rotation.jpg" width="50%">
   <div class="figcaption">
@@ -204,7 +204,7 @@ This paper uses GAN to generate synthetic medical images. By adding the syntheti
 There are advantages and disadvantages of Data augmentation for improving deep learning in image classification problem.\
 **Pros:**
 -	Induce invariance and regularization, reduce model complexity. 
--	Improve generalization. 
+-	Improve generalization. Prevent the model from memorizing just the training examples, and force it to learn the features that can be in variety of orientations.
 -	Improve robustness, reduce overfitting. 
 -	Make a CNN model to be invariant to translation, viewpoint, size or illumination. [[Yi Xu, et al, 2021]](https://openreview.net/forum?id=p84tly8c4zf)
 -	Artificially increase training and testing dataset even you have a small dataset
@@ -216,7 +216,7 @@ There are advantages and disadvantages of Data augmentation for improving deep l
      
 <a name='guidelines'></a>
 ## Image Data Augmentation Guidelines
--	If error anaylsis shows the model not doing well due to lack of data
+-	If error anaylsis shows the model not doing well due to lack of data (image source is too expensive such as medical images)
 -	Or due to imbalance of data, while add more augmentation generated data can help.
 -	Data augmentation shall increase in information and a better basis 
 -	Can focus on the feature and generalize it. [[Asifullah Khan, et al, 2020]](https://arxiv.org/ftp/arxiv/papers/1901/1901.06032.pdf)
@@ -232,7 +232,7 @@ There are advantages and disadvantages of Data augmentation for improving deep l
 
 <a name='package'></a>
 ## Common image Data Augmentation Packages
--	keras.preprocessing.image.[ImageDataGenerator](https://www.tensorflow.org/api_docs/python/tf/keras/preprocessing/image/ImageDataGenerator)
+-	[keras.preprocessing.image.ImageDataGenerator](https://www.tensorflow.org/api_docs/python/tf/keras/preprocessing/image/ImageDataGenerator)
 -	[imaug](https://imgaug.readthedocs.io/en/latest/)
 -	[albumentations](https://albumentations.ai/)
 -	[opencv](https://towardsdatascience.com/complete-image-augmentation-in-opencv-31a6b02694f5)
