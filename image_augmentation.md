@@ -187,7 +187,7 @@ Kernel filters are a very popular technique in image processing to sharpen and b
   <img src="/assets/ia/filterKernel.jpg" width="50%">
   <div class="figcaption">
    
-     
+      
 <a name='mix'></a>
 ### 15)	 Mix images
 The concept of mixing images in an unintuitive way was further investigated by [Summers and Dinneen](https://arxiv.org/pdf/1805.11272.pdf). They looked at using non-linear methods to combine images into new training instances. All of the methods they used resulted in better performance compared to the baseline models. 
