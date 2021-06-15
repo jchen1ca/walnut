@@ -2,8 +2,8 @@ Table of Contents:
 
 - [Introduction](#intro)
 - [Common Image Data Augmentation Methods](#methods)
-   - [Flipping](#flips)
-   - [Cropping](#crops)
+   - [Flips](#flips)
+   - [Crops](#crops)
    - [Color Jitter](#jitter)
    - [Translation](#translation)
    - [Rotation ](#rotation)
@@ -36,11 +36,11 @@ There are more threories trying to explain how data augmentation works. [Dao et 
 
 <a name='methods'></a>
 ## Common Image Data Augmentation Methods
-[Krizhevsky et al. 2012, ResNet](https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf), used data augmentation to  reduce overfitting on image data. In that paper, the data augmentation consists of generating image translations and horizontal reflections, and proves to reduce overfitting and increase prediction accuracy. Generally, we can classify image data augmentation into two main groups: **position augmentation**, which includes scaling, cropping, flipping, padding, rotation, translation, affine transformation; and **color augmentation** which includes brightness, contrast, saturation, hue[Harshit Kumar, 2021](https://iq.opengenus.org/data-augmentation/). New data augmentation methods are introduced to image data deep learning, such as mixing, simulation, GAN based, etc. Below is a list of common image data augmentation methods.
+[Krizhevsky et al. 2012, ResNet](https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf) is one of the first papers to use data augmentation to reduce overfitting and improve model's generalization in deep learning. In that paper, the data augmentation consists of generating image translations and horizontal reflections, and proves to reduce overfitting and increase prediction accuracy. Generally, we can classify image data augmentation into two main groups: **position augmentation**, which includes scaling, cropping, flipping, padding, rotation, translation, affine transformation; and **color augmentation** which includes brightness, contrast, saturation, hue[Harshit Kumar, 2021](https://iq.opengenus.org/data-augmentation/). New data augmentation methods are introduced to image data deep learning, such as mixing, simulation, GAN based, etc. We can also combine some of the methods together to get entirely new datapoints. Below is a list of common image data augmentation methods.
 
 <a name='flips'></a>
-### 1)	Horizontal flipping
-Horizontal flipping is widely used in almost all image augmentation. It is more popular than vertical flipping which sometimes is not appliable. Horizontal flips is also called mirror image horizontally. Below the horizontal flips can myultiply the datapoints we have. And this is another form of data regularization.
+### 1)	Horizontal flips
+Horizontal flipping is widely used in almost all image augmentation. Horizontal flips is also called mirror image horizontally. Below the horizontal flips can myultiply the datapoints we have. And this is another form of data regularization.
  <div class="fig figcenter fighighlight">
   <img src="/assets/ia/flip.jpg" width="40%">
   <div class="figcaption">
@@ -48,7 +48,7 @@ Horizontal flipping is widely used in almost all image augmentation. It is more 
  [This image](https://www.flickr.com/photos/malfet/1428198050) by [Nikita](https://www.flickr.com/photos/malfet/) is licensed under [CC-BY2.0](https://creativecommons.org/licenses/by/2.0/)
 
 <a name='crops'></a>
-### 2)	Cropping
+### 2)	Crops
 A section of the image is sampled randomly. Normally followed by image resize or rescale. Crop partial of the original image for training can force the model to find the cat even it's partially present, for example, see its tail only.\
 Training: sample random crops/scales\
 Resnet:
@@ -156,8 +156,8 @@ Over-fitting usually happens when your neural network tries to learn high freque
 
      
 <a name='reinforcement'></a>
-### 13)	Using reinforcement learning to for image data augmentation 
-This paper describes a procedure called AutoAugment to automatically search for improved dataaugmentation policies. And use the search algorithm to find the best policy such that the neural network yields the highest validation accuracy on a target dataset. [Cubuk et al. 2019](https://openaccess.thecvf.com/content_CVPR_2019/papers/Cubuk_AutoAugment_Learning_Augmentation_Strategies_From_Data_CVPR_2019_paper.pdf)
+### 13)	Using reinforcement learning for image data augmentation 
+This paper describes a procedure called AutoAugment to automatically search for improved data augmentation policies by swappig the hyperparameters. And use the search algorithm to find the best policy and cmobinnation such that the neural network yields the highest validation accuracy on a target dataset. [Cubuk et al. 2019](https://openaccess.thecvf.com/content_CVPR_2019/papers/Cubuk_AutoAugment_Learning_Augmentation_Strategies_From_Data_CVPR_2019_paper.pdf)
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/reinforce.jpg" width="50%">
   <div class="figcaption">
@@ -177,7 +177,7 @@ The concept of mixing images in an unintuitive way was further investigated by [
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/mixed.jpg" width="50%">
   <div class="figcaption">
-Another example: Train on rando blends of images, i.e. 40% cat, 60% dog. Then use original images for test.
+Another example: Train on rando blends of images, i.e. 40% cat, 60% dog. Then use original images for test. The mixing will increase the training datapoints. There are some papers discussing to mix with three images, but the typical way is to mix with two images to get the best results.
   <div class="fig figcenter fighighlight">
   <img src="/assets/ia/blend.jpg" width="50%">
   <div class="figcaption">
@@ -211,8 +211,7 @@ There are advantages and disadvantages of Data augmentation for improving deep l
 
 **Cons:**
 -	Too much of image augmentation combined with other forms of regularization (weight L2, dropout) can cause the net to underfit.
--	Too much image augmentation can lead to decreased accuracy in training and validation. 
--	Data augmentation can bring data bias, i.e. the augmented data distribution can be quite different from the original one. [[Yi Xu, et al, 2020]]( https://arxiv.org/pdf/2010.01267.pdf)
+-	Data augmentation may bring data bias, i.e. the augmented data distribution can be quite different from the original one. [[Yi Xu, et al, 2020]]( https://arxiv.org/pdf/2010.01267.pdf)
 
      
 <a name='guidelines'></a>
@@ -226,8 +225,9 @@ There are advantages and disadvantages of Data augmentation for improving deep l
 
      
 <a name='applicable'></a>
-## Situations that Data Augmentation is  not Applicable
-Not every image data augmentation method can be used for any applications. We need to consider the infomation that the data augmentation added. Sometimes a data augmentation method can mess up the dataset. For example, in numerical OCR model training, we can’t use vertical flipping, because “6” becomes to "9" after vertical flipping.
+## Caution in Data Augmentation
+- Don't apply transformation that could change the class. For example, in OCR model training, we can’t use horizontal flips because "b" and "d" can be messed. And we can't use 180 rotation because “6” and "9" can be messed.
+- Out of plane rotation needs to fix the blank area
 
 
 <a name='package'></a>
